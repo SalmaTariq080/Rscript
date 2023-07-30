@@ -1,0 +1,29 @@
+samtools mpileup -l /mnt/Exome_Sequencing/nexterarapidcapture_exome_targetedregions_liftover_hg38.bed BN001.marked_duplicates.bam -o BN001.marked_duplicates_mpileup.txt
+
+samtools mpileup -l /mnt/Exome_Sequencing/nexterarapidcapture_exome_targetedregions_liftover_hg38.bed BN001.marked_duplicates.bam BN002.marked_duplicates.bam BN003.marked_duplicates.bam BN004.marked_duplicates.bam BN005.marked_duplicates.bam BN006.marked_duplicates.bam BN007.marked_duplicates.bam BN008.marked_duplicates.bam BN009.marked_duplicates.bam BN010.marked_duplicates.bam BN011.marked_duplicates.bam BN012.marked_duplicates.bam -o mpileup_output.txt
+awk -F "\t" '{print $1,$2,$4,$7,$10,$13,$16,$19,$22,$25,$28,$31,$34,$37}' mpileup_output.txt > mpileup_output.tsv
+awk -F " " '{ if( $7 < 0.05 && ($15 < -1 || $15 > 1 )) print $5}' test_results_C3_alt_3prime.tsv | wc -l
+awk -F " " '{ if( $7 < 0.05 && ($15 < -1 || $15 > 1 )) print $5}' test_results_C3_alt_5prime.tsv | wc -l
+awk -F " " '{ if( $7 < 0.05 && ($15 < -1 || $15 > 1 )) print $5}' test_results_C3_mult_exon_skip.tsv | wc -l
+awk -F " " '{ if( $7 < 0.05 && ($15 < -1 || $15 > 1 )) print $5}' test_results_C3_intron_retention.tsv | wc -l
+awk -F " " '{ if( $7 < 0.05 && ($15 < -1 || $15 > 1 )) print $5}' test_results_C3_mutex_exons.tsv | wc -l
+awk -F " " '{ if(($12 < -1 || $12 > 1 )) print $5}' test_results_C3_mutex_exons.tsv | wc -l
+awk -F " " '{ if(($12 < -1 || $12 > 1 )) print $5}' test_results_extended_C3_exon_skip.tsv | wc -l
+plot-bamstats -p my_output BN001_chm13_markdup.stats
+command: plot-bamstats -p my_output BN001_chm13_markdup.stats
+error: Can't exec "gnuplot": No such file or directory at /home/salmatariq/miniconda3/envs/myenv/bin/plot-bamstats line 316.
+tried to install gnuplot in conda environment "myenv" but error "The following packages are causing the inconsistency:" so installed it in the other environment "dragmap"
+after resolving the error, run the following cmmand again
+plot-bamstats -p my_output BN001_chm13_markdup.stats
+the output files are in /mnt/Exome_Sequencing/Map_WXS_CHM13 a lot of files are generated as output so all the files have the base name "my_output"
+tried to install the other bamstats program but it is not providing plots it just give values for plots use plot-bamstats in is a part of samtools you dont have to install any other program here
+install whatshap for phasing but it is also in dragmap environment
+conda install -c bioconda whatshap
+to get the stats of the vcf file
+whatshap stats merged.vcf.gz
+awk -F " " '{ if( $7 < 0.05 && ($15 < -1 || $15 > 1 )) print }' test_results_C3_alt_3prime.tsv >> DE_events
+awk -F " " '{ if( $7 < 0.05 && ($15 < -1 || $15 > 1 )) print }' test_results_C3_alt_5prime.tsv >> DE_events
+awk -F " " '{ if( $7 < 0.05 && ($15 < -1 || $15 > 1 )) print }' test_results_C3_exon_skip.tsv >> DE_events
+awk -F " " '{ if( $7 < 0.05 && ($15 < -1 || $15 > 1 )) print }' test_results_C3_intron_retention.tsv >> DE_events
+awk -F " " '{ if( $7 < 0.05 && ($15 < -1 || $15 > 1 )) print }' test_results_C3_mult_exon_skip.tsv >> DE_events
+awk -F " " '{ if( $7 < 0.05 && ($15 < -1 || $15 > 1 )) print }' test_results_C3_mutex_exons.tsv >> DE_events
